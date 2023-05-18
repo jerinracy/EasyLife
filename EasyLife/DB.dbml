@@ -1,0 +1,98 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="data" Class="DBDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\data.mdf;Integrated Security=True;Connect Timeout=30" SettingsObjectName="EasyLife.Properties.Settings" SettingsPropertyName="dataConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.admin_info" Member="admin_infos">
+    <Type Name="admin_info">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="name" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="age" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="email" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="phone_number" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="location_id" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="username" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="password" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Association Name="location_admin_info" Member="location" ThisKey="location_id" OtherKey="location_id" Type="location" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.category" Member="categories">
+    <Type Name="category">
+      <Column Name="category_id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="category_name" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Association Name="category_staff_info" Member="staff_infos" ThisKey="category_id" OtherKey="category_id" Type="staff_info" />
+    </Type>
+  </Table>
+  <Table Name="dbo.customer_info" Member="customer_infos">
+    <Type Name="customer_info">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="name" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="age" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="email" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="phone_number" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="location_id" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="username" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="password" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Association Name="customer_info_order" Member="orders" ThisKey="id" OtherKey="user_id" Type="order" />
+      <Association Name="location_customer_info" Member="location" ThisKey="location_id" OtherKey="location_id" Type="location" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.feedback" Member="feedbacks">
+    <Type Name="feedback">
+      <Column Name="feedback_id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="rating" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="comment" Type="System.String" DbType="VarChar(500)" CanBeNull="true" />
+      <Association Name="feedback_order" Member="orders" ThisKey="feedback_id" OtherKey="feedback_id" Type="order" />
+    </Type>
+  </Table>
+  <Table Name="dbo.location" Member="locations">
+    <Type Name="location">
+      <Column Name="location_id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="full_address" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Association Name="location_admin_info" Member="admin_infos" ThisKey="location_id" OtherKey="location_id" Type="admin_info" />
+      <Association Name="location_staff_info" Member="staff_infos" ThisKey="location_id" OtherKey="location_id" Type="staff_info" />
+      <Association Name="location_customer_info" Member="customer_infos" ThisKey="location_id" OtherKey="location_id" Type="customer_info" />
+    </Type>
+  </Table>
+  <Table Name="dbo.[order]" Member="orders">
+    <Type Name="order">
+      <Column Name="order_id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="service_id" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="staff_id" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="feedback_id" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="date" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Column Name="status" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="user_id" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="customer_info_order" Member="customer_info" ThisKey="user_id" OtherKey="id" Type="customer_info" IsForeignKey="true" />
+      <Association Name="feedback_order" Member="feedback" ThisKey="feedback_id" OtherKey="feedback_id" Type="feedback" IsForeignKey="true" />
+      <Association Name="service_order" Member="service" ThisKey="service_id" OtherKey="service_id" Type="service" IsForeignKey="true" />
+      <Association Name="staff_info_order" Member="staff_info" ThisKey="staff_id" OtherKey="staff_id" Type="staff_info" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.services" Member="services">
+    <Type Name="service">
+      <Column Name="service_id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="service_name" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Association Name="service_order" Member="orders" ThisKey="service_id" OtherKey="service_id" Type="order" />
+    </Type>
+  </Table>
+  <Table Name="dbo.staff_availability" Member="staff_availabilities">
+    <Type Name="staff_availability">
+      <Column Name="availability_id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="availability" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Association Name="staff_availability_staff_info" Member="staff_infos" ThisKey="availability_id" OtherKey="availability_id" Type="staff_info" />
+    </Type>
+  </Table>
+  <Table Name="dbo.staff_info" Member="staff_infos">
+    <Type Name="staff_info">
+      <Column Name="staff_id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="name" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="age" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="phone_number" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="location_id" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="category_id" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="availability_id" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="staff_info_order" Member="orders" ThisKey="staff_id" OtherKey="staff_id" Type="order" />
+      <Association Name="location_staff_info" Member="location" ThisKey="location_id" OtherKey="location_id" Type="location" IsForeignKey="true" />
+      <Association Name="category_staff_info" Member="category" ThisKey="category_id" OtherKey="category_id" Type="category" IsForeignKey="true" />
+      <Association Name="staff_availability_staff_info" Member="staff_availability" ThisKey="availability_id" OtherKey="availability_id" Type="staff_availability" IsForeignKey="true" />
+    </Type>
+  </Table>
+</Database>
